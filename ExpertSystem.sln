@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{50E73B
 		Assets\knowledge.txt = Assets\knowledge.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpertSystem.WebNg", "ExpertSystem.WebNg\ExpertSystem.WebNg.csproj", "{999D5ED1-7B3F-48EB-8789-E3C8812F4DF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{3D98C97C-6ACE-468A-8F22-36CD0C85BE4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D98C97C-6ACE-468A-8F22-36CD0C85BE4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D98C97C-6ACE-468A-8F22-36CD0C85BE4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{999D5ED1-7B3F-48EB-8789-E3C8812F4DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{999D5ED1-7B3F-48EB-8789-E3C8812F4DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{999D5ED1-7B3F-48EB-8789-E3C8812F4DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{999D5ED1-7B3F-48EB-8789-E3C8812F4DF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
