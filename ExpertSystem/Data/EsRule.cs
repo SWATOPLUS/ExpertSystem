@@ -14,19 +14,5 @@ namespace ExpertSystem.Data
             SourceProperties = sourceProperties.ToArray();
             ResultProperty = resultProperty;
         }
-
-        public static EsRule Parse(string s)
-        {
-            var parts = s.Split(new[] { "<то/>" }, StringSplitOptions.None);
-
-            var sourceProperties = parts[0]
-                .Split(new[] {";", "\n", ","}, StringSplitOptions.None)
-                .Select(EsProperty.Parse)
-                .Where(x => x != null);
-
-            var resultProperty = EsProperty.Parse(parts[1]);
-
-            return new EsRule(sourceProperties, resultProperty);
-        }
     }
 }

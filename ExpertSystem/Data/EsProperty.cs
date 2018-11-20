@@ -13,19 +13,5 @@ namespace ExpertSystem.Data
         public string Name { get; }
 
         public string Value { get; }
-
-        public static EsProperty Parse(string s)
-        {
-            if (!s.Contains("="))
-            {
-                return null;
-            }
-
-            var parts = s.Split('=')
-                .Select(x => x.Trim())
-                .ToArray();
-
-            return new EsProperty(parts[0], parts[1]);
-        }
     }
 }

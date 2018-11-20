@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ExpertSystem.Cli": {
+      "commandName": "Project",
+      "workingDirectory": "./../Assets"
+    }
+  }
+}

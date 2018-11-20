@@ -10,7 +10,7 @@ namespace ExpertSystem.Cli
     {
         private static void Main()
         {
-            var knowledge = EsKnowledge.Parse(File.ReadAllText("knowledge.txt"));
+            var knowledge = EsParser.ParseKnowledge(File.ReadAllText("knowledge.txt"));
 
             var engine = new InferenceEngine(knowledge, (x, y) => Ask(x, y));
 

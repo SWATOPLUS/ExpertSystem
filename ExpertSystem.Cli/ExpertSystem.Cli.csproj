@@ -9,10 +9,4 @@
     <ProjectReference Include="..\ExpertSystem\ExpertSystem.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="knowledge.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
