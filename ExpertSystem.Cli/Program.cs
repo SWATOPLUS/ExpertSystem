@@ -10,7 +10,8 @@ namespace ExpertSystem.Cli
     {
         private static void Main()
         {
-            var knowledge = EsParser.ParseKnowledge(File.ReadAllText("knowledge.txt"));
+            //set working directory for CLI project to ../
+            var knowledge = EsParser.ParseKnowledge(File.ReadAllText("Assets/knowledge.txt"));
 
             var engine = new InferenceEngine(knowledge, (x, y) => Ask(x, y));
 
