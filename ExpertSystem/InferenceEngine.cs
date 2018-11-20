@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ExpertSystem.Data;
 
@@ -25,50 +24,21 @@ namespace ExpertSystem
 
         public async Task<string> AnalyzeAsync(string targetProperty)
         {
-            var skippedRules = new HashSet<EsRule>(EqualityComparer<EsRule>.Default);
-            var facts = new Dictionary<string, string>();
-            var targetStack = new Stack<string>();
-            targetStack.Push(targetProperty);
+            var state = new InferenceState(_knowledge, targetProperty);
 
-            while (targetStack.Any())
+            while (true)
             {
-                var property = targetStack.Peek();
+                state.Process();
 
-                var inferenceRule = _knowledge.RulesByResultPropertyName[property]
-                    .Except(skippedRules)
-                    .FirstOrDefault();
-
-                if (inferenceRule != null)
+                if (state.IsCompleted)
                 {
-                    var matchResult = inferenceRule.IsMatch(facts);
-
-                    if (matchResult.IsMatch)
-                    {
-                        targetStack.Pop();
-                        facts[property] = inferenceRule.ResultProperty.Value;
-                    }
-                    else if (matchResult.IsNotMatch)
-                    {
-                        skippedRules.Add(inferenceRule);
-                    }
-                    else //if unknown
-                    {
-                        targetStack.Push(matchResult.UnknownProperty);
-                    }
+                    return state.Result;
                 }
-                else
-                {
-                    if (property == targetProperty)
-                    {
-                        return null;
-                    }
 
-                    facts[property] = await _questionFuncAsync(property, _knowledge.PropertyPossibleValues[property]);
-                    targetStack.Pop();
-                }
+                var factValue = await _questionFuncAsync(state.UnknownFact, state.UnknownFactVariants);
+
+                state.PushFactValue(factValue);
             }
-
-            return facts[targetProperty];
         }
     }
 }
