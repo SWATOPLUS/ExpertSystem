@@ -1,71 +1,67 @@
 import { EsKnowledge, EsRule } from './models';
 import { Stack } from 'stack-typescript';
+import { List } from 'linqts';
 
 export class InferenceState {
-        private knowledge: EsKnowledge;
-        private facts: { [key: string]: string };
-        private skippedRules: EsRule[];
-        private targetStack: Stack<string>;
+    private facts: { [key: string]: string };
+    private skippedRules: List<EsRule>;
+    private targetStack: Stack<string>;
 
-        TargetProperty: string;
+    TargetProperty: string;
 
-        Result: string;
+    Result: string;
 
-        IsCompleted: boolean;
+    IsCompleted: boolean;
 
-        UnknownFact: string;
+    UnknownFact: string;
 
-        UnknownFactVariants: string[];
+    UnknownFactVariants: string[];
 
-        constructor(knowledge: EsKnowledge, targetProperty: string) {
-        }
+    constructor(private knowledge: EsKnowledge, private targetProperty: string) {
 
-        public Process() {
-            while (this.targetStack.length !== 0)
-            {
-                const 
-                var inferenceRule = _knowledge.RulesByResultPropertyName                    .Except(_skippedRules)
-                    .FirstOrDefault();
+        this.facts = {};
+        this.skippedRules = new List<EsRule>();
+        this.targetStack = new Stack<string>();
+        this.targetStack.push(targetProperty);
+        this.TargetProperty = this.targetProperty;
+    }
 
-                if (inferenceRule != null)
-                {matchResult: var;
-
-                    if (matchResult.IsMatch)
-                    {
-                        _targetStack.Pop();
-                        _facts[property] = inferenceRule.ResultProperty.Value;
-                    }
-                    else if (matchResult.IsNotMatch)
-                    {
-                        _skippedRules.Add(inferenceRule);
-                    }
-                    else //if unknown
-                    {
-                        _targetStack.Push(matchResult.UnknownProperty);
-                    }
+    public Process() {
+        while (this.targetStack.length !== 0) {
+            const property = this.targetStack.pop();
+            this.targetStack.push(property);
+            const inferenceRule = new List(this.knowledge.RulesByResultPropertyName[property])
+                .Except(this.skippedRules)
+                .FirstOrDefault();
+            if (inferenceRule) {
+                const matchResult = inferenceRule.IsMatch(this.facts);
+                if (matchResult.IsMatch) {
+                    this.targetStack.pop();
+                    this.facts[property] = inferenceRule.ResultProperty.Value;
+                } else if (matchResult.IsNotMatch) {
+                    this.skippedRules.Add(inferenceRule);
+                } else {
+                    this.targetStack.push(matchResult.UnknownProperty);
                 }
-                else
-                {
-                    if (property == TargetProperty)
-                    {
-                        Result = null;
-                        IsCompleted = true;
-                    }
-                    else
-                    {
-                        UnknownFact = property;
-                        UnknownFactVariants = _knowledge.PropertyPossibleValues[property];
-                    }
-
-                    return;
+            } else {
+                if (property === this.TargetProperty) {
+                    this.Result = null;
+                    this.IsCompleted = true;
+                } else {
+                    this.UnknownFact = property;
+                    this.UnknownFactVariants = this.knowledge.PropertyPossibleValues[property];
                 }
+                return;
             }
-
-            IsCompleted = true;
-            Result = _facts[TargetProperty];
         }
 
-        public PushFactValue(value: string) {
-        }
+        this.IsCompleted = true;
+        this.Result = this.facts[this.TargetProperty];
+    }
+
+    public PushFactValue(value: string) {
+        const property = this.targetStack.pop();
+        this.facts[property] = value;
     }
 }
+
